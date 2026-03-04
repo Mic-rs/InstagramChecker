@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Non-Followers</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #262626;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        
+        .subtitle {
+            color: #8e8e8e;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .upload-section {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            color: #262626;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        
+        input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px dashed #dbdbdb;
+            border-radius: 8px;
+            background: #fafafa;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        input[type="file"]:hover {
+            border-color: #667eea;
+            background: #f0f0ff;
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        button:disabled {
+            background: #dbdbdb;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        #results {
+            margin-top: 30px;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-box {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            color: #8e8e8e;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        
+        .list-container {
+            background: #fafafa;
+            border-radius: 8px;
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .user-item {
+            padding: 12px;
+            background: white;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .username {
+            font-weight: 500;
+            color: #262626;
+        }
+        
+        .profile-link {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 12px;
+            padding: 6px 12px;
+            background: #667eea15;
+            border-radius: 4px;
+        }
+        
+        .error {
+            background: #ff4444;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .instructions {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 25px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        
+        .instructions strong {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .download-btn {
+            width: 100%;
+            padding: 14px;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: transform 0.2s;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            background: #059669;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: #f9fafb;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .filter-option input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .filter-option label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: normal;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <h1 style="margin: 0;">Instagram Non-Followers</h1>
+            <div style="text-align: right;">
+                <div style="color: #8e8e8e; font-size: 12px; font-style: italic;">Realizzato da Mic</div>
+                <a href="https://instagram.com/_michelecast_" target="_blank" style="color: #667eea; font-size: 11px; text-decoration: none;">@_michelecast_</a>
+            </div>
+        </div>
+        <p class="subtitle">Scopri chi segui ma non ti segue</p>
+        
+        <div class="instructions">
+            <strong>Come ottenere i file JSON:</strong>
+            1. Instagram → Impostazioni → Centro gestione account → Le tue informazioni e autorizzazioni → Esporta le tue informazioni → Esporta sul dispositivo → Clicca su "personalizza informazioni" e 	 		          	        seleziona solo "Follower e persone/Pagine seguite"<br>
+            2. Seleziona formato JSON<br>
+            3. Ricevi link via email<br>
+            4. Carica "following.json" e "followers.json"
+        </div>
+        
+        <div class="upload-section">
+            <label for="following">Following (chi segui)</label>
+            <input type="file" id="following" accept=".json">
+        </div>
+        
+        <div class="upload-section">
+            <label for="followers">Followers (chi ti segue)</label>
+            <input type="file" id="followers" accept=".json">
+        </div>
+
+        <div class="upload-section">
+            <label>Filtri</label>
+            <div class="filter-option">
+                <input type="checkbox" id="skipBigAccounts" checked>
+                <label for="skipBigAccounts">Escludi celebrità e brand noti</label>
+            </div>
+        </div>
+        
+        <button id="analyze" disabled>Analizza</button>
+        
+        <div id="error" class="error hidden"></div>
+        
+        <div id="results" class="hidden">
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="stat-number" id="notFollowingBack">0</div>
+                    <div class="stat-label">Non ti seguono</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="totalFollowing">0</div>
+                    <div class="stat-label">Totale following</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="filtered">0</div>
+                    <div class="stat-label">Celebrità filtrate</div>
+                </div>
+            </div>
+            
+            <button class="download-btn" id="downloadBtn">📥 Scarica lista (TXT)</button>
+            
+            <div class="list-container" id="userList"></div>
+        </div>
+    </div>
+
+    <script>
+        let followingFile = null;
+	let followersFile = null;
+        let notFollowingBackList = [];
+        
+        const followingInput = document.getElementById('following');
+        const followersInput = document.getElementById('followers');
+        const analyzeBtn = document.getElementById('analyze');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const skipBigAccountsCheckbox = document.getElementById('skipBigAccounts');
+        const errorDiv = document.getElementById('error');
+        const resultsDiv = document.getElementById('results');
+        
+        function readJSON(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const data = JSON.parse(e.target.result);
+                        resolve(data);
+                    } catch (err) {
+                        reject('File JSON non valido');
+                    }
+                };
+                reader.onerror = () => reject('Errore nella lettura del file');
+                reader.readAsText(file);
+            });
+        }
+        
+        function extractFollowing(data) {
+            if (data.relationships_following) {
+                return data.relationships_following
+                    .map(item => item.title)
+                    .filter(Boolean);
+            }
+            throw new Error('Formato following.json non valido');
+        }
+        
+        function extractFollowers(data) {
+            if (Array.isArray(data)) {
+                return data
+                    .map(item => item.string_list_data?.[0]?.value)
+                    .filter(Boolean);
+            }
+            throw new Error('Formato followers.json non valido');
+        }
+        
+        const knownBigAccounts = new Set([
+            'instagram', 'meta', 'facebook', 'whatsapp', 'threads',
+            'cristiano', 'leomessi', 'selenagomez', 'therock', 'kyliejenner', 'kimkardashian',
+            'arianagrande', 'beyonce', 'justinbieber', 'taylorswift', 'kendalljenner', 'jlo',
+            'nickiminaj', 'mileycyrus', 'katyperry', 'rihanna', 'ladygaga', 'ddlovato',
+            'kourtneykardash', 'khloekardashian', 'gigihadid', 'bellahadid', 'zendaya',
+            'billieeilish', 'adele', 'shakira', 'jenniferaniston', 'emmawatson', 'priyankachopra',
+            'virat.kohli', 'neymarjr', 'davidbeckham', 'zlataibrahimovic', 'kingjames',
+            'kevinhart4real', 'vindiesel', 'champagnepapi', 'badgalriri', 'caradelevingne',
+            'iamcardib', 'snoopdogg', 'eminem', 'drake', 'postmalone', 'travisscott',
+            'chiaraferragni', 'fedez', 'gianlucavacchi', 'frafasolino', 'giuliasalemi',
+            'belen', 'elisabettacanalisreal', 'stefanodemartino', 'elisabettafranchi',
+            'nike', 'adidas', 'puma', 'underarmour', 'newbalance', 'converse', 'vans',
+            'gucci', 'louisvuitton', 'chanel', 'dior', 'prada', 'versace', 'armani',
+            'dolcegabbana', 'burberry', 'fendi', 'balenciaga', 'givenchy', 'valentino',
+            'calvinklein', 'tommyhilfiger', 'ralphlauren', 'hugoboss', 'zara', 'hm',
+            'versace_official', 'giorgioarmani',
+            'apple', 'google', 'microsoft', 'samsung', 'tesla', 'spacex', 'amazon',
+            'netflix', 'spotify', 'playstation', 'xbox', 'nintendo', 'tiktok',
+            'adobecreativecloud', 'gopro', 'sonypictures',
+            'ferrari', 'scuderiaferrari', 'lamborghini', 'porsche', 'mercedesbenz', 'bmw',
+            'audi', 'rollsroyce', 'bentley', 'astonmartin', 'mclaren', 'bugatti',
+            'formula1', 'f1', 'redbullracing', 'mercedesamgf1', 'mclarenf1',
+            'lewishamilton', 'charles_leclerc', 'maxverstappen1', 'carlossainz55',
+            'realmadrid', 'fcbarcelona', 'manchesterunited', 'chelseafc', 'liverpoolfc',
+            'arsenal', 'juventus', 'acmilan', 'inter', 'sscnapoli', 'asroma', 'atleticomadrid',
+            'psg', 'fcbayern', 'bvb', 'championsleague', 'fifaworldcup', 'uefaeuro',
+            'premierleague', 'laliga', 'seriea', 'bundesliga', 'ligue1', 'mancity',
+            'tottenhamhotspur', 'acffiorentina', 'sslazio', 'atalantabc',
+            'k.mbappe', 'erlinghaaland', 'paulpogba', 'toni.kr8s', 'sterling7', 'serjioramos',
+            'nba', 'nfl', 'nhl', 'mlb', 'ufc', 'wwe', 'espn', 'sportscenter',
+            'skysport', 'gazzetta', 'corrieredellosport', 'tuttosport', 'goal',
+            'bleacherreport', 'foxsports', 'skysportf1', 'dazn_it',
+            'natgeo', 'nationalgeographic', 'discovery', 'bbcnews', 'cnn', 'nytimes',
+            'theguardian', 'foxnews', 'skynews', 'euronews', 'rai', 'mediaset',
+            'rainews', 'corriere', 'repubblica', 'lastampa', 'ilsole24ore',
+            'fanpage', 'open_the_magazine', 'sky', 'skytg24',
+            'marvel', 'marvelstudios', 'starwars', 'disney', 'pixar', 'warnerbros', 'hbo', 'hulu',
+            'primevideo', 'appletvplus', 'disneyplus', 'paramount', 'paramountplus',
+            'applemusic', 'youtubemusic', 'soundcloud', 'mtv', 'vevo',
+            'cocacola', 'pepsi', 'redbull', 'starbucks', 'mcdonalds', 'kfc',
+            'burgerking', 'subway', 'pizzahut', 'dominos', 'dunkin',
+            'nespresso', 'corona', 'heineken', 'budweiser',
+            'vogue', 'vogueitalia', 'gq', 'elle', 'cosmopolitan', 'harpersbazaar',
+            'vanityfair', 'vanityfairitalia',
+            'emirates', 'lufthansa', 'britishairways', 'airfrance', 'klm', 'alitalia',
+            'sephora', 'maccosmetics', 'nyxcosmetics', 'maybelline', 'loreal',
+            'nasa', 'theworldbank', 'unitednations',
+            '9gag', 'memesita', 'pubity', 'thefatjewish', 'fuckjerry', 'ladbible',
+            'natgeowild', 'natgeotravel', 'natgeoyourshot', 'azzurri', 'valeriolundini',
+            'sickmadman', 'holyernia', 'emiskilla', 'ehipapi', 'kidyugi3p', 'youngmilesss',
+            'west.mckennnie', 'easfcmobile', 'sean_wotherspoon', 'tedua_wildbandana', 'sicitalian_',
+            'andreafratino', 'kenanyildiz', 'sferaebbasta', 'otto.climan', 'damiano_er_faina',
+            'simonepanetty', 'sydney_sweeney', 'pablogavi', 'primevideoit', 'giorgiolocatelli1',
+            'thelazzinho', 'vlahovicdusan', 'trash_italiano', 'berengo', 'erling', 'paulodybala',
+            'mdeligt_', 'frenkiedejong', 'pontifex', 'lakers', 'emrata', 'dele', 'youtube',
+            'loganpaul', 'pioeamedeo83', 'ilmasseo', 'a.ntisocially', 'googledesign',
+            'nascecresceignora', 'lercio.it', 'thasup', 'blurs7', 'alessialanza', 'satyaamaino',
+            'rapadvisor.it', 'surry', 'tredicipietrotredici', 'zanoxvii', 'nello_taver2',
+            'aledellagiusta', 'kingsleague_it', 'sante', 'breshbandicoot', 'annapep3', 'virgilabloh',
+            'uslecce', 'hectorbellerin', 'tmblurrr', 'ghali', 'gianlucagazzoli', 'mandrake1984_',
+            'corinnakopf', 'easportsfcit', 'fedexchiesa', 'outpump', 'timburton', 'madisonbeer',
+            'lebonwski', 'luis_sal', 'alice.debortoli', 'ye', 'klaus', 'lebron', 'alecattelan', 'illmostro'
+        ]);
+        
+        function isBigAccount(username) {
+            return knownBigAccounts.has(username.toLowerCase());
+        
+        }
+        
+        function showError(message) {
+            errorDiv.textContent = message;
+            errorDiv.classList.remove('hidden');
+            setTimeout(() => errorDiv.classList.add('hidden'), 5000);
+        }
+        
+        function checkReady() {
+	analyzeBtn.disabled = !(followingInput.files.length && followersInput.files.length);
+        }
+
+        followingInput.addEventListener('change', () => {
+            followingFile = followingInput.files[0] || null;
+            resultsDiv.classList.add('hidden');
+            checkReady();
+         });
+
+        followersInput.addEventListener('change', () => {
+            followersFile = followersInput.files[0] || null;
+            resultsDiv.classList.add('hidden');
+            checkReady();
+         });
+        
+analyzeBtn.addEventListener('click', async () => {
+  try {
+
+    if (!followingFile || !followersFile) {
+      showError('Seleziona entrambi i file');
+      return;
+    }
+
+    const followingData = await readJSON(followingFile);
+    const followersData = await readJSON(followersFile);
+
+    const following = extractFollowing(followingData);
+    const followers = extractFollowers(followersData);
+
+    const followersSet = new Set(followers);
+    let notFollowingBack = following.filter(user => !followersSet.has(user));
+
+    let filteredCount = 0;
+
+    if (skipBigAccountsCheckbox.checked) {
+      const beforeFilter = notFollowingBack.length;
+      notFollowingBack = notFollowingBack.filter(user => !isBigAccount(user));
+      filteredCount = beforeFilter - notFollowingBack.length;
+    }
+
+    notFollowingBackList = notFollowingBack;
+
+    document.getElementById('notFollowingBack').textContent = notFollowingBack.length;
+    document.getElementById('totalFollowing').textContent = following.length;
+    document.getElementById('filtered').textContent = filteredCount;
+
+    const userList = document.getElementById('userList');
+
+     (function blockInAppWebViews() {
+  const ua = navigator.userAgent || '';
+  const isInApp =
+    /WhatsApp|FBAN|FBAV|Instagram|Line|WeChat|Twitter|LinkedInApp|Snapchat|TikTok|Pinterest/i.test(ua) ||
+    (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches === false && /; wv\)/i.test(ua));
+
+  if (isInApp) {
+    alert('Apri questa pagina nel browser (Safari/Chrome/Firefox) per caricare i file JSON.');
+  }
+})();
+
+    userList.innerHTML = notFollowingBack.length === 0
+      ? '<p style="text-align:center;color:#8e8e8e;">Tutti ti seguono! 🎉</p>'
+      : notFollowingBack.map(username => `
+          <div class="user-item">
+            <span class="username">@${username}</span>
+            <a href="https://instagram.com/${username}" target="_blank" class="profile-link">Apri</a>
+          </div>
+        `).join('');
+
+    resultsDiv.classList.remove('hidden');
+
+  } catch (err) {
+    showError(typeof err === 'string' ? err : ('Errore: ' + (err.message || err)));
+  }
+});
+
+        downloadBtn.addEventListener('click', () => {
+            const text = notFollowingBackList.join('\n');
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'non-followers.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+    </script>
+</body>
+</html>
