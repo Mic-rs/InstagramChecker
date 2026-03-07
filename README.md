@@ -30,7 +30,5 @@ Il risultato non è garantito al 100%.
 Per ridurre errori: usa export recenti, carica i file corretti e verifica manualmente i casi dubbi.
 
 ## Autore
-
-Realizzato da _Mic_
   
 [@_michelecast_](https://instagram.com/_michelecast_)
